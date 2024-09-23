@@ -19,8 +19,8 @@ const getInputs = (): Input => {
 export const run = async (): Promise<void> => {
   const input = getInputs();
   const octokit = getOctokit(input.token);
-
-  // get all the users in an organization
+  
+  info(`Getting members of ${input.organization}`);
   const users = await octokit.paginate(octokit.rest.orgs.listMembers, {
     org: input.organization,
   });

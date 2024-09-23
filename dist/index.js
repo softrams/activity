@@ -29145,6 +29145,7 @@ const getInputs = () => {
 const run = async () => {
     const input = getInputs();
     const octokit = (0, github_1.getOctokit)(input.token);
+    (0, core_1.info)(`Getting members of ${input.organization}`);
     const users = await octokit.paginate(octokit.rest.orgs.listMembers, {
         org: input.organization,
     });
