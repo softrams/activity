@@ -21,7 +21,7 @@ export const run = async (): Promise<void> => {
   const octokit = getOctokit(input.token);
   
   info(`Getting members of ${input.organization}`);
-  const users = await octokit.paginate(octokit.rest.orgs.listMembers, {
+  const usersResponse = await octokit.paginate(octokit.rest.orgs.listMembers, {
     org: input.organization,
   });
   
@@ -29,12 +29,24 @@ export const run = async (): Promise<void> => {
   since.setDate(since.getDate() - 90);
   const formattedSince = since.toISOString().slice(0, 10);
 
-  for (const user of users) {
+  type userActivity = {
+    commits?: any,
+    _user: typeof usersResponse[0];
+  };
+  const users = usersResponse.reduce((acc, user) => {
+    acc[user.login] = {
+      _user: user
+    };
+    return acc;
+  }, {} as Record<string, userActivity>);
+
+  for (const [login, activity] of Object.entries(users)) {
     const commits = await octokit.rest.search.commits({
-      q: `author:${user.login} org:${input.organization} committer-date:<${formattedSince}`,
+      q: `author:${login} org:${input.organization} committer-date:<${formattedSince}`,
     });
-    info(JSON.stringify(commits, null, 2));
+    activity.commits = commits;
   }
+  console.log(users);
 };
 
 run();

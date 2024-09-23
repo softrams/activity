@@ -29146,18 +29146,25 @@ const run = async () => {
     const input = getInputs();
     const octokit = (0, github_1.getOctokit)(input.token);
     (0, core_1.info)(`Getting members of ${input.organization}`);
-    const users = await octokit.paginate(octokit.rest.orgs.listMembers, {
+    const usersResponse = await octokit.paginate(octokit.rest.orgs.listMembers, {
         org: input.organization,
     });
     const since = new Date();
     since.setDate(since.getDate() - 90);
     const formattedSince = since.toISOString().slice(0, 10);
-    for (const user of users) {
+    const users = usersResponse.reduce((acc, user) => {
+        acc[user.login] = {
+            _user: user
+        };
+        return acc;
+    }, {});
+    for (const [login, activity] of Object.entries(users)) {
         const commits = await octokit.rest.search.commits({
-            q: `author:${user.login} org:${input.organization} committer-date:<${formattedSince}`,
+            q: `author:${login} org:${input.organization} committer-date:<${formattedSince}`,
         });
-        (0, core_1.info)(JSON.stringify(commits, null, 2));
+        activity.commits = commits;
     }
+    console.log(users);
 };
 exports.run = run;
 (0, exports.run)();
