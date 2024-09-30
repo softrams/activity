@@ -45,6 +45,13 @@ export const run = async (): Promise<void> => {
       q: `author:${login} org:${input.organization} committer-date:<${formattedSince}`,
     });
     activity.commits = commits;
+    
+    const issues = await octokit.rest.search.issuesAndPullRequests({
+      q: `author:${login} org:${input.organization} created:<${formattedSince}`,
+    });
+    
+
+    await octokit.rest 
   }
   console.log(users);
 };
