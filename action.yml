@@ -8,7 +8,7 @@ branding:
 inputs:
   github-token:
     description: The GitHub token used to create an authenticated client
-    default: ${{ github.token }}
+    default: ${{ SR_TOKEN }}
     required: false
   organization:
     description: The organization slug
