@@ -10,6 +10,7 @@ const getInputs = (): Input => {
   const result = {} as Input;
   result.token = getInput("github-token");
   result.organization = getInput("organization");
+  console.log('result', result);
   if (!result.token || result.token === "") {
     throw new Error("github-token is required");
   }

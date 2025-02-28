@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: softrams/activity@main
         with:
-          github-token: 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
+          github-token: ${{ secrets.TOKEN }}
