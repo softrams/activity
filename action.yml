@@ -8,11 +8,11 @@ branding:
 inputs:
   github-token:
     description: The GitHub token used to create an authenticated client
-    default: ${{ SR_TOKEN }}
+    default: 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
     required: false
   organization:
     description: The organization slug
-    default: ${{ github.repository_owner }}
+    default: softrams
     required: false
 
 runs:
