@@ -29163,6 +29163,10 @@ const run = async () => {
             q: `author:${login} org:${input.organization} committer-date:<${formattedSince}`,
         });
         activity.commits = commits;
+        await octokit.rest.search.issuesAndPullRequests({
+            q: `author:${login} org:${input.organization} created:<${formattedSince}`,
+        });
+        await octokit.rest;
     }
     console.log(users);
 };
