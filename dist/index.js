@@ -29137,6 +29137,7 @@ const getInputs = () => {
     const result = {};
     result.token = (0, core_1.getInput)("github-token");
     result.organization = (0, core_1.getInput)("organization");
+    console.log('result', result);
     if (!result.token || result.token === "") {
         throw new Error("github-token is required");
     }
